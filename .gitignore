@@ -118,6 +118,6 @@ dmypy.json
 
 # work files
 *.csv
-*.txt
 *.mrc
 *.mrk
+*sierra-codes.txt
