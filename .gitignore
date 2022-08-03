@@ -115,3 +115,9 @@ dmypy.json
 
 # local
 *temp*
+
+# work files
+*.csv
+*.txt
+*.mrc
+*.mrk
