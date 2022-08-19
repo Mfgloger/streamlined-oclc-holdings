@@ -122,3 +122,5 @@ dmypy.json
 *.mrk
 *sierra-codes.txt
 *report.txt
+*.db
+*.db-journal
