@@ -3,8 +3,10 @@ import pytest
 
 
 from src.nyp_ingest import (
+    find_oclc_ids,
     get_file_date,
     get_status_id,
+    is_research,
     norm_ocn,
     norm_title,
     ocn_str2int,
@@ -70,3 +72,34 @@ def test_file_date():
 )
 def test_norm_title(arg, expectation):
     assert norm_title(arg) == expectation
+
+
+@pytest.mark.parametrize(
+    "arg,expectation",
+    [
+        ([None, None, "12345", "(OCoLC)12345", None, "12345"], {12345}),
+        ([None, None, "ocm00000001", "(WaOLN)0067978", None, "2"], {1, 2}),
+        ([None, None, "", "", "", ""], set()),
+        (
+            [
+                None,
+                None,
+                "NYPG1342-S",
+                "(WaOLN)0067978@(OCoLC)12345",
+                None,
+                "22345@nyp32345",
+            ],
+            {12345, 22345},
+        ),
+    ],
+)
+def test_find_oclc_ids(arg, expectation):
+    assert find_oclc_ids(arg) == expectation
+
+
+@pytest.mark.parametrize(
+    "arg,expectation",
+    [("RL", True), ("BL", False), ("", False), ("RL@BL", True), ("BL@RL", True)],
+)
+def is_research(arg, expectation):
+    assert is_research(arg) == expectation

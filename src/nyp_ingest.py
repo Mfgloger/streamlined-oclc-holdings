@@ -153,13 +153,37 @@ def read_deletions(fh: str) -> None:
             print(f"Saved {n} rows.")
 
 
-def find_oclc_ids(row: list) -> list:
+def find_oclc_ids(row: list) -> set:
     """
     Extracts OCNs from Sierra export
     """
-    ocns = []
-    if row[2]:
-        pass
+    ocns = set()
+
+    # 001 tag
+    local_control_no = norm_ocn(row[2])
+    if local_control_no is not None:
+        ocns.add(local_control_no)
+
+    # 035 tag (repeatable)
+    for field in row[3].split("@"):
+        other_control_no = norm_ocn(field)
+        if other_control_no is not None:
+            ocns.add(other_control_no)
+
+    # 991 tag (repeatable)
+    for field in row[5].split("@"):
+        uncertain_control_no = norm_ocn(field)
+        if uncertain_control_no is not None:
+            ocns.add(uncertain_control_no)
+
+    return ocns
+
+
+def is_research(value: str) -> bool:
+    if "RL" in value:
+        return True
+    else:
+        return False
 
 
 def read_sierra_export(fh: str) -> None:
@@ -186,6 +210,7 @@ def read_sierra_export(fh: str) -> None:
             bibNo = row[0]
             title = norm_title(row[1])
             ocns = find_oclc_ids(row)
+            research = is_research(row[4])
 
 
 if __name__ == "__main__":
