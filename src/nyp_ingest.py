@@ -210,7 +210,15 @@ def read_sierra_export(fh: str) -> None:
             bibNo = row[0]
             title = norm_title(row[1])
             ocns = find_oclc_ids(row)
-            research = is_research(row[4])
+            isResearch = is_research(row[4])
+
+            stmt = insert(SierraBib).values(
+                bibNo=bibNo,
+                title=title,
+                isResearch=isResearch,
+                sierraOcns=[SierraBibOcns(ocn=o, bibNo=bibNo) for o in ocns],
+            )
+            conn.execute(stmt)
 
 
 if __name__ == "__main__":
