@@ -22,10 +22,10 @@ We need to identify OCN numbers on the deletion list that belong to RL bibs in S
 	+ mid (primary key)
 	+ bibNo (digits only, no 'b' prefix)
 	+ reportId
-	+ isOcnMatchingProcess (True, False)
-	+ outcomeId
+	+ isOcnProcess (True, False)
+	+ statusId
 	+ procDate
-	+ oclcNo
+	+ ocn
 
 ### report
 	+ rid (primary key)
@@ -54,10 +54,27 @@ We need to identify OCN numbers on the deletion list that belong to RL bibs in S
 + possibly SQLite will be a suitable match for the database
 + consider bulk inserts to database since tons of data to process
 + use OCLC BibProcessingReport to pull data
++ in OCLC reports, bibs that had data errors were not processed and their entry is missing Sierra bib number (). The only way to find them is by their location in the file - it is possible to determine which bib in file sequence had a problem and based on that isolate them for review.
++ title normalization rules:
+	+ all lower case
+	+ remove any whitespace in the begining and end
+	+ no commas, periods, forward or backward slashes, colons, semicolons, single or double quotation marks
 
-# Question
+## Question
 + should we add OCN numbers to matched Sierra bibs first (full match, changed)?
-+ should we care about holdings of bibs excluded from the process?
++ should we care about holdings of bibs excluded from the process? (Steven agreed this is not something we need to dig deeper)
+
+
+## Stats
++ data error: 870 bibs (sid 4, not present in final_process view because bibNo is empty!)
++ unresolved: 238,200 (sid 3)
+	+ full match unresolved: 100,354
+	+ ocn match unresolved: 137,846
++ processing error: 4,404 (sid 5)
++ matched: 7,591,717 (sid 1)
++ create: 192,886 (sid 2)
+
+
 
 
 # Ideas how to proceed
