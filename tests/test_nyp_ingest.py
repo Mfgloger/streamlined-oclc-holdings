@@ -2,10 +2,33 @@ from datetime import datetime, date
 import pytest
 
 
-from src.nyp_ingest import get_file_date, get_status_id, norm_ocn, norm_title
+from src.nyp_ingest import (
+    get_file_date,
+    get_status_id,
+    norm_ocn,
+    norm_title,
+    ocn_str2int,
+)
 
 
-@pytest.mark.parametrize("arg,expectation", [("1", 1), ("", None)])
+@pytest.mark.parametrize(
+    "arg,expectation", [("1", 1), ("", None), ("NYPG724068095-B", None)]
+)
+def test_ocn_str2int(arg, expectation):
+    assert ocn_str2int(arg) == expectation
+
+
+@pytest.mark.parametrize(
+    "arg,expectation",
+    [
+        ("ocm00000001", 1),
+        ("ocn000000001", 1),
+        ("on0000000001", 1),
+        ("(OCoLC)1234", 1234),
+        ("(WaOLN)nyp0067978", None),
+        ("NN724068095", None),
+    ],
+)
 def test_norm_ocn(arg, expectation):
     assert norm_ocn(arg) == expectation
 

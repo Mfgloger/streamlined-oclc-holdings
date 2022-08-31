@@ -42,11 +42,23 @@ def find_bib_proc_reports(fdir: str) -> list[str]:
     return files
 
 
-def norm_ocn(ocn_str: str) -> Optional[int]:
+def ocn_str2int(ocn_str: str) -> Optional[int]:
     try:
         return int(ocn_str)
     except ValueError:
         return None
+
+
+def norm_ocn(ocn_str: str) -> Optional[int]:
+    if ocn_str.lower().startswith("ocm") or ocn_str.lower().startswith("ocn"):
+        ocn = ocn_str2int(ocn_str[3:])
+    elif ocn_str.lower().startswith("on"):
+        ocn = ocn_str2int(ocn_str[2:])
+    elif ocn_str.lower().startswith("(ocolc)"):
+        ocn = ocn_str2int(ocn_str[7:])
+    else:
+        ocn = ocn_str2int(ocn_str)
+    return ocn
 
 
 def norm_title(title_str: str) -> str:
@@ -141,6 +153,15 @@ def read_deletions(fh: str) -> None:
             print(f"Saved {n} rows.")
 
 
+def find_oclc_ids(row: list) -> list:
+    """
+    Extracts OCNs from Sierra export
+    """
+    ocns = []
+    if row[2]:
+        pass
+
+
 def read_sierra_export(fh: str) -> None:
     """
     Sierra's export config:
@@ -163,6 +184,8 @@ def read_sierra_export(fh: str) -> None:
         for row in reader:
             n += 1
             bibNo = row[0]
+            title = norm_title(row[1])
+            ocns = find_oclc_ids(row)
 
 
 if __name__ == "__main__":
