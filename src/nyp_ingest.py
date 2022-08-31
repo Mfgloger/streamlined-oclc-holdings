@@ -8,9 +8,23 @@ from sqlalchemy.orm import Session
 from sqlalchemy.engine import Connection
 
 try:
-    from .nyp_datastore import OUTCOMES, OclcMatch, Report, get_engine, session_scope
+    from .nyp_datastore import (
+        OUTCOMES,
+        HoldDelete,
+        OclcMatch,
+        Report,
+        get_engine,
+        session_scope,
+    )
 except ImportError:
-    from nyp_datastore import OUTCOMES, OclcMatch, Report, get_engine, session_scope
+    from nyp_datastore import (
+        OUTCOMES,
+        HoldDelete,
+        OclcMatch,
+        Report,
+        get_engine,
+        session_scope,
+    )
 
 
 def find_bib_proc_reports(fdir: str) -> list[str]:
@@ -33,6 +47,20 @@ def norm_ocn(ocn_str: str) -> Optional[int]:
         return int(ocn_str)
     except ValueError:
         return None
+
+
+def norm_title(title_str: str) -> str:
+    title = (
+        title_str.replace(".", "")
+        .replace(",", "")
+        .replace(":", "")
+        .replace(";", "")
+        .replace("/", "")
+        .replace("\\", "")
+        .replace("'", "")
+        .replace('"', "")
+    )
+    return title.lower().strip()
 
 
 def get_status_id(status: str) -> int:
@@ -59,7 +87,7 @@ def get_file_date(handle: str) -> date:
     return date
 
 
-def read_report(fh: str) -> list[OclcMatch]:
+def read_report(fh: str) -> None:
     engine = get_engine()
     with engine.connect() as conn:
         with open(fh, "r") as f:
@@ -88,9 +116,35 @@ def read_report(fh: str) -> list[OclcMatch]:
             print(f"Saved {n} rows.")
 
 
+def read_deletions(fh: str) -> None:
+    """
+    Parses, normalizes and stores in db OCLC deletion report
+    """
+    engine = get_engine()
+    with engine.connect() as conn:
+        with open(fh, "r") as f:
+            print(f"Processing {fh}.")
+            reader = csv.reader(f, delimiter="|")
+            n = 0
+            for row in reader:
+                n += 1
+                ocn = norm_ocn(row[0])
+                title = norm_title(row[1])
+                stmt = insert(HoldDelete).values(
+                    ocn=ocn,
+                    title=title,
+                )
+                conn.execute(stmt)
+            print(f"Saved {n} rows.")
+
+
 if __name__ == "__main__":
-    fdir = "./files/NYPL/orig_reports"
-    reports = find_bib_proc_reports(fdir)
-    print(f"Identified {len(reports)} in {fdir}")
-    for report in reports:
-        read_report(report)
+    # fdir = "./files/NYPL/orig_reports"
+    # reports = find_bib_proc_reports(fdir)
+    # print(f"Identified {len(reports)} in {fdir}")
+    # for report in reports:
+    #     read_report(report)
+
+    read_deletions(
+        "./files/NYPL/orig_reports/metacoll.NYP.NYP-1419-20220602-report.20220806-070829.txt"
+    )

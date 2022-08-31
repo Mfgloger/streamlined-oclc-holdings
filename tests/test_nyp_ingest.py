@@ -2,7 +2,7 @@ from datetime import datetime, date
 import pytest
 
 
-from src.nyp_ingest import get_file_date, get_status_id, norm_ocn
+from src.nyp_ingest import get_file_date, get_status_id, norm_ocn, norm_title
 
 
 @pytest.mark.parametrize("arg,expectation", [("1", 1), ("", None)])
@@ -25,6 +25,24 @@ def test_get_status_id(arg, expectation):
     assert get_status_id(arg) == expectation
 
 
-def test_temp():
+def test_file_date():
     handle = "NYP-NYP.1042671.IN.BIB.D20220803.T101322131.1042671.NYP.20220803.StreamlinedHoldings.OCNs.file6.mrc.LbdExceptionReport.txt"
     assert get_file_date(handle) == datetime(2022, 8, 3).date()
+
+
+@pytest.mark.parametrize(
+    "arg,expectation",
+    [
+        ("Foo.", "foo"),
+        ("Foo /", "foo"),
+        ("Foo \\", "foo"),
+        ("Foo, Spam", "foo spam"),
+        ("Foo: spam", "foo spam"),
+        ("Foo; spam", "foo spam"),
+        (" Foo ", "foo"),
+        ("'Foo'", "foo"),
+        ('"Foo"', "foo"),
+    ],
+)
+def test_norm_title(arg, expectation):
+    assert norm_title(arg) == expectation
