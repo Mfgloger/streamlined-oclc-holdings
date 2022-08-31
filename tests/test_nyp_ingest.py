@@ -42,6 +42,7 @@ def test_file_date():
         (" Foo ", "foo"),
         ("'Foo'", "foo"),
         ('"Foo"', "foo"),
+        ("Foo@Foo", "foo"),
     ],
 )
 def test_norm_title(arg, expectation):

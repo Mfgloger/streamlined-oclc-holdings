@@ -50,6 +50,9 @@ def norm_ocn(ocn_str: str) -> Optional[int]:
 
 
 def norm_title(title_str: str) -> str:
+    if "@" in title_str:
+        title_lst = title_str.split("@")
+        title_str = title_lst[0]
     title = (
         title_str.replace(".", "")
         .replace(",", "")
@@ -136,6 +139,30 @@ def read_deletions(fh: str) -> None:
                 )
                 conn.execute(stmt)
             print(f"Saved {n} rows.")
+
+
+def read_sierra_export(fh: str) -> None:
+    """
+    Sierra's export config:
+        RECORD #(BIBLIO)
+        245|a
+        BIB UTIL #
+        035|a
+        910|a
+        991|y
+
+        text qualifier: ""
+        field delimiter: ^
+        repeated field delimiter: @
+    """
+    with open(fh, "r") as f:
+        print(f"Processing {fh}.")
+        reader = csv.reader(f, delimter="^")
+        next(reader)  # skip header
+        n = 0
+        for row in reader:
+            n += 1
+            bibNo = row[0]
 
 
 if __name__ == "__main__":
