@@ -52,11 +52,11 @@ class SierraBib(Base):
     """
 
     __tablename__ = "sierra_bib"
-    bibNo = Column(Integer, primary_key=True, autoincrement=False)
+    bibNo = Column(Integer, primary_key=True, nullable=False)
     title = Column(String, nullable=False)
     isResearch = Column(Boolean)
-    bibCode3 = Column(String(1), nullable=False)
-    bibFormat = Column(String(1), nullable=False)
+    bibCode3 = Column(String(1))
+    bibFormat = Column(String(1))
 
     sierraOcns = relationship("SierraBibOcns", cascade="all, delete-orphan")
     outcomes = relationship("OclcMatch", cascade="all, delete-orphan")
@@ -88,12 +88,13 @@ class OclcMatch(Base):
     statusId = Column(Integer, ForeignKey("status.sid"), nullable=False)
     procDate = Column(Date, nullable=False)
     ocn = Column(Integer)
+    changedOcn = Column(Boolean)
 
     def __repr__(self):
         return (
             f"<OclcMatch(mid='mid', bibNo='{self.bibNo}', reportId='{self.reportId}, "
             f"isOcnProcess='{self.isOcnProcess}', statusId='{self.statusId}', "
-            f"procDate='{self.procDate}', ocn='{self.ocn}')>"
+            f"procDate='{self.procDate}', ocn='{self.ocn}', changedOcn='{self.changedOcn}')>"
         )
 
 
@@ -151,3 +152,10 @@ def init_datastore(db: str = "nyp_db.db"):
 
 if __name__ == "__main__":
     init_datastore()
+
+"""
+bibNo, mid
+100034032 (5048117)
+22221482x (5944478)
+109232082 (4849520)
+"""
