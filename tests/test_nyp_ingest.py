@@ -6,6 +6,7 @@ from src.nyp_ingest import (
     find_oclc_ids,
     get_file_date,
     get_status_id,
+    is_ocn_changed,
     is_research,
     norm_ocn,
     norm_title,
@@ -29,6 +30,7 @@ def test_ocn_str2int(arg, expectation):
         ("(OCoLC)1234", 1234),
         ("(WaOLN)nyp0067978", None),
         ("NN724068095", None),
+        ("12345", 12345),
     ],
 )
 def test_norm_ocn(arg, expectation):
@@ -103,3 +105,11 @@ def test_find_oclc_ids(arg, expectation):
 )
 def is_research(arg, expectation):
     assert is_research(arg) == expectation
+
+
+@pytest.mark.parametrize(
+    "arg1, arg2,expectation",
+    [(1, 1, False), (None, 1, True), ("", 1, True), (2, None, True)],
+)
+def test_is_ocn_changed(arg1, arg2, expectation):
+    assert is_ocn_changed(arg1, arg2) == expectation
