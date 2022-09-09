@@ -1,4 +1,6 @@
 import csv
+import os
+
 from pymarc import Record
 
 
@@ -24,3 +26,11 @@ def save2csv(dst_fh, row):
 def save2marc(dst_fh: str, record: Record) -> None:
     with open(dst_fh, "ab") as out:
         out.write(record.as_marc())
+
+
+def start_from_scratch(fh):
+    """
+    Deletes any exsiting files
+    """
+    if os.path.isfile(fh):
+        os.remove(fh)
