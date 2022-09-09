@@ -1,8 +1,6 @@
-from contextlib import contextmanager
-
+from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, String, create_engine
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine, Boolean, Column, Date, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship, sessionmaker
 
 
 Base = declarative_base()
@@ -17,42 +15,13 @@ OUTCOMES = {
 }
 
 
-class DataAccessLayer:
-    def __init__(self, db: str):
-        self.conn = f"sqlite:///{db}"
-        self.engine = None
-
-    def connect(self):
-        self.engine = create_engine(self.conn)
-        Base.metadata.create_all(self.engine)
-        self.Session = sessionmaker(bind=self.engine)
-
-
-@contextmanager
-def session_scope(db: str = "nyp_db.db"):
-    """
-    Provides a transactional scope around series of operations.
-    """
-    dal = DataAccessLayer(db)
-    dal.connect()
-    session = dal.Session()
-    try:
-        yield session
-        session.commit()
-    except:
-        session.rollback()
-        raise
-    finally:
-        session.close()
-
-
 class SierraBib(Base):
     """
     Sierra bib data
     """
 
     __tablename__ = "sierra_bib"
-    bibNo = Column(Integer, primary_key=True, nullable=False)
+    bibNo = Column(Integer, primary_key=True, autoincrement=False)
     title = Column(String, nullable=False)
     isResearch = Column(Boolean)
     bibCode3 = Column(String(1))
@@ -155,7 +124,7 @@ if __name__ == "__main__":
 
 """
 bibNo, mid
-100034032 (5048117)
-22221482x (5944478)
-109232082 (4849520)
+10003403 (5048117)
+22221482 (5944478)
+10923208 (4849520)
 """
