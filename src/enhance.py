@@ -174,7 +174,3 @@ def launch_bpl_enhancement(out_fh: str = None) -> None:
                     )
                     save2csv(fail_fh, [row.bibNo, row.oclcNo])
                     raise WorldcatSessionError(f"API error. See report at {fail_fh}")
-
-
-if __name__ == "__main__":
-    launch_enhancement()
