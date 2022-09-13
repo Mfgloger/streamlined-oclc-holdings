@@ -104,6 +104,10 @@ def manipulate_bib(
     # remove other unwanted fields
     bib.remove_fields("019", "029", "263", "938")
 
+    bib.add_field(
+        Field(tag="907", indicators=[" ", " "], subfields=["a", f".b{bibNo}a"])
+    )
+
     # add command tag
     command_str = f"*b2={sierra_format}"
     if sierra_opac != "-":
