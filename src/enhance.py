@@ -14,7 +14,7 @@ from io import BytesIO
 from bookops_marc import Bib, SierraBibReader
 from bookops_marc.bib import pymarc_record_to_local_bib
 from bookops_worldcat import WorldcatAccessToken, MetadataSession
-from bookops_worldcat.errors import WorldcatSessionError
+from bookops_worldcat.errors import WorldcatSessionError, WorldcatRequestError
 import pandas as pd
 from pymarc import Field, Record, parse_xml_to_array
 from requests import Response
@@ -144,7 +144,12 @@ def launch_bpl_enhancement(out_fh: str = None) -> None:
             if n == 0:
                 print("No source Sierra MARC file found. Please export records first.")
             for i, row in enumerate(rows):
-                response = get_worldcat_bib(session, row.oclcNo, row.bibNo, i, n)
+                try:
+                    response = get_worldcat_bib(session, row.oclcNo, row.bibNo, i, n)
+                except WorldcatRequestError:
+                    print(
+                        "API request error. Resume with 'python run.py enrich-resume' command."
+                    )
 
                 if response is not None:
                     data = BytesIO(response.content)
