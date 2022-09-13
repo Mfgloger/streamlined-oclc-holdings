@@ -143,7 +143,9 @@ def launch_bpl_enhancement(out_fh: str = None) -> None:
             rows = select_for_enhancing(db_session)
             n = len(rows)
             if n == 0:
-                print("No source Sierra MARC file found. Please export records first.")
+                print(
+                    "No available records for enrichment. Please export another batch."
+                )
             for i, row in enumerate(rows):
                 try:
                     response = get_worldcat_bib(session, row.oclcNo, row.bibNo, i, n)
