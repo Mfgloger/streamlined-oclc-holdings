@@ -24,9 +24,17 @@ The enhancement process should include sending resulting records to authority wo
 #### Procedure step-by-step guide
 1. Activate virtual environment:
 	+ navigate to repo main directory
-	+ run bash```source ./venvcmd.sh``` or any other method to activate project's virtual environment
+	+ run 
+	```bash
+	source ./venvcmd.sh
+	``` 
+	or any other method to activate project's virtual environment
 2. Select records for processing:
-	+ run the following command: `python run.py BPL select2enrich 5000` where the last argument is size of the batch (5k records in the above example)
+	+ run the following command: 
+	```bash
+	python run.py BPL select2enrich 5000
+	``` 
+	where the last argument is size of the batch (5k records in the above example)
 	+ the script produces a file with Sierra bib numbers for processing in the `Documents` directory: `bpl-batch2enrich-[YYMMDD]-sierra-nos.csv`
 3. Provide relevant Sierra MARC records:
 	+ using `\Documents\bpl-batch2enrich-[YYMMDD]-sierra-nos.csv` create a list in Sierra (use 'import records' feature and upload bib numbers from the file)
@@ -34,7 +42,10 @@ The enhancement process should include sending resulting records to authority wo
 	+ note and delete from `bpl_db.db` any records that have been deleted from Sierra
 
 4. Get Worldcat records for selected batch
-	+ run the following command in CLI: bash```python run.py enrich```
+	+ run the following command in CLI:
+	```bash
+	python run.py enrich
+	```
 	+ requires WorldCat Metadata API credentials
 	+ uses `\Documents\bpl-batch2enrich-[YYMMDD].out` file to obtain local data to be incorporated into final enriched records
 	+ outputs obtain records to `\Documents\bpl-enriched-[yymmdd].mrc`
