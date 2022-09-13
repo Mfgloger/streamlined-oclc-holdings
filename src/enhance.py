@@ -133,6 +133,7 @@ def launch_bpl_enhancement(out_fh: str = None) -> None:
 
     creds_fh = os.path.join(os.getenv("USERPROFILE"), f".oclc/bpl_overload.json")
     token = get_token(creds_fh)
+    print("Worldcat Metadata API token obtained...")
 
     with MetadataSession(authorization=token) as session:
         print("Worldcat session opened...")
@@ -147,7 +148,7 @@ def launch_bpl_enhancement(out_fh: str = None) -> None:
                 try:
                     response = get_worldcat_bib(session, row.oclcNo, row.bibNo, i, n)
                 except WorldcatRequestError:
-                    print(
+                    raise WorldcatRequestError(
                         "API request error. Resume with 'python run.py enrich-resume' command."
                     )
 
@@ -172,7 +173,7 @@ def launch_bpl_enhancement(out_fh: str = None) -> None:
                         f"./src/files/BPL/enhanced/failed2enhance-{timestamp:%y%m%d}.csv",
                     )
                     save2csv(fail_fh, [row.bibNo, row.oclcNo])
-                    raise WorldcatSessionError("API error.")
+                    raise WorldcatSessionError(f"API error. See report at {fail_fh}")
 
 
 if __name__ == "__main__":
