@@ -102,7 +102,7 @@ def manipulate_bib(
         bib.add_ordered_field(field)
 
     # remove other unwanted fields
-    bib.remove_fields("019", "029", "263", "938")
+    bib.remove_fields("019", "029", "263", "936", "938")
 
     bib.add_field(
         Field(tag="907", indicators=[" ", " "], subfields=["a", f".b{bibNo}a"])
