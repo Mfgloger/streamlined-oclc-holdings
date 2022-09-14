@@ -40,6 +40,7 @@ The enhancement process should include sending resulting records to authority wo
 	+ using `\Documents\bpl-batch2enrich-[YYMMDD]-sierra-nos.csv` create a list in Sierra (use 'import records' feature and upload bib numbers from the file)
 	+ export MARC records using Data Exchange and "out" export table, use following naming convention: bpl-batch2enrich-[YYMMDD].out and save it into the `Documents` directory
 	+ note and delete from `bpl_db.db` any records that have been deleted from Sierra
+	(in Sierra List deleted bibs appear on top as empty rows, double-clicking allows to look up bib number of the deleted record)
 
 4. Get Worldcat records for selected batch
 	+ run the following command in CLI:
@@ -48,13 +49,12 @@ The enhancement process should include sending resulting records to authority wo
 	```
 	+ requires WorldCat Metadata API credentials
 	+ uses `\Documents\bpl-batch2enrich-[YYMMDD].out` file to obtain local data to be incorporated into final enriched records
-	+ outputs obtain records to `\Documents\bpl-enriched-[yymmdd].mrc`
+	+ outputs obtained records to `\Documents\bpl-enriched-[yymmdd].mrc`
 		+ replaces ISBNs found on Worldcat record with local ones
 		+ adds the 907 tag with Sierra bib number to use as a match point in the overlay process
-		+ adds the 947 with SHPbot
 		+ removes following fields: 019, 029, 263, 938
 		+ adds 949 with command to set proper Sierra bib format and OPAC Display code
-	+ only records present in the `bpl-batch2enrich-[YYMMDD].mrc` will be processed
+	+ only records present in the `bpl-batch2enrich-[YYMMDD].out` will be processed
 
 5. Load enriched records to Sierra:
 	+ use "Load Overload NEW" load table
