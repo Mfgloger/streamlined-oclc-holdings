@@ -40,7 +40,7 @@ The enhancement process should include sending resulting records to authority wo
 	+ using `\Documents\bpl-batch2enrich-[YYMMDD]-sierra-nos.csv` create a list in Sierra (use 'import records' feature and upload bib numbers from the file)
 	+ export MARC records using Data Exchange and "out" export table, use following naming convention: bpl-batch2enrich-[YYMMDD].out and save it into the `Documents` directory
 	+ note and delete from `bpl_db.db` any records that have been deleted from Sierra
-	(in Sierra List deleted bibs appear on top as empty rows, double-clicking allows to look up bib number of the deleted record)
+	(in the Sierra List deleted bibs appear on top as empty rows, double-clicking allows to look up bib number of the deleted record)
 
 4. Get Worldcat records for selected batch
 	+ run the following command in CLI:
@@ -63,4 +63,4 @@ The enhancement process should include sending resulting records to authority wo
 	+ output a MARC file for Backstage processing using export table "out" and name the file using following convention: BLW-GAP-[YYMMDD].out`
 	+ follow directions outlined [here](https://docs.google.com/document/d/13EXSuZ8QVWnvwSxzYgTeQteNoFaQWqxJC6K-lyxL6DQ/edit#heading=h.mcwvej88gk8g) to upload and import processed by Backstage files
 	+ do not start Backstage job while any regular MAX job is in process!
-7. Record enrichment and authority work numbers for statistical purposes
+7. Record enrichment and authority work numbers for statistical purposes ([sheet](https://docs.google.com/spreadsheets/d/1fbVGzfgoG2-RTR_q0oeRlJltnzaDMCBxLL49sdOlLyE))
