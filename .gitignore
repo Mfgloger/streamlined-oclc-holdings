@@ -126,3 +126,4 @@ dmypy.json
 *.db-journal
 *.sqbpro
 venvcmd.sh
+!bpl_db.db
