@@ -11,4 +11,6 @@ def test_nyp_datastore():
 
 def test_bpl_datastore():
     with session_scope(db="scr/bpl_db.db") as session:
-        result = session.query()
+        result = session.query(EnhancedBib).filter_by(bibNo=10000037).one_or_none()
+        assert result is not None
+        asserrt result.oclcNo = 1049552268
