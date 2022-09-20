@@ -24,14 +24,19 @@ The enhancement process should include sending resulting records to authority wo
 #### Procedure step-by-step guide
 1. Activate virtual environment:
 	+ navigate to repo main directory
-	+ run 
-	```bash
-	source ./venvcmd.sh
+	+ run
+	bash: 
+	```
+	source ./.venv/scripts/activate
 	``` 
+	or CMD:
+	```
+	.venv/scripts/activate
+	```
 	or any other method to activate project's virtual environment
 2. Select records for processing:
 	+ run the following command: 
-	```bash
+	```
 	python run.py BPL select2enrich 5000
 	``` 
 	where the last argument is size of the batch (5k records in the above example)
@@ -45,7 +50,7 @@ The enhancement process should include sending resulting records to authority wo
 4. Get Worldcat records for selected batch
 	+ run the following command in CLI:
 	```bash
-	python run.py enrich
+	python run.py BPL enrich
 	```
 	+ requires WorldCat Metadata API credentials
 	+ uses `\Documents\bpl-batch2enrich-[YYMMDD].out` file to obtain local data to be incorporated into final enriched records
