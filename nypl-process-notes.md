@@ -44,7 +44,7 @@ We need to identify OCN numbers on the deletion list that belong to RL bibs in S
 ## Notes
 + records were sent multiple times to fix matching issues - consider only the last matching routine (use date in oclc_match tbl)
 + provisional records (not matched and with errors) may have holdings deleted - focus on that
-+ when searching for invalid holdings deletion consider first matches on oclcNo, then tilte - review the latter
++ when searching for invalid holdings deletion consider first matches on oclcNo, then title - review the latter
 + ignore records in Sierra that were not submitted to OCLC (exclusion note)
 + calculate number of records that were ended up as provisional or skipped because of error (possible only after ingesting all reports - multiple submission per record)
 + calculate number of records in Sierra that would benefit from inclusion of OCN number (positively matched)
