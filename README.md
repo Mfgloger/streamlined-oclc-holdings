@@ -37,9 +37,9 @@ The enhancement process should include sending resulting records to authority wo
 2. Select records for processing:
 	+ run the following command: 
 	```
-	python run.py BPL select2enrich 5000
+	python run.py BPL select2enrich --volume 1000
 	``` 
-	where the last argument is size of the batch (5k records in the above example)
+	where the last argument is size of the batch (1k records in the above example) 5000 records is the default if no argument is given.
 	+ the script produces a file with Sierra bib numbers for processing in the `Documents` directory: `bpl-batch2enrich-[YYMMDD]-sierra-nos.csv`
 3. Provide relevant Sierra MARC records:
 	+ using `\Documents\bpl-batch2enrich-[YYMMDD]-sierra-nos.csv` create a list in Sierra (use 'import records' feature and upload bib numbers from the file)
